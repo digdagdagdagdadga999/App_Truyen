@@ -2,12 +2,12 @@ require('dotenv').config(); // Đặt ở đầu tệp
 const express = require("express");
 const mongoose = require("mongoose");
 const routes = require("./routes/web");
-
+const cookieParser = require('cookie-parser');
 const app = express();
 
 var bodyParser = require("body-parser");
 
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
