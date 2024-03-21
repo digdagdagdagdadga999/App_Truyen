@@ -1,0 +1,21 @@
+<h2 class="text-center text-uppercase fw-bold">danh sách truyện tranh</h2>
+
+<div class="container" style="display: flex;flex-wrap: wrap;">
+
+    {{#each truyens}}
+
+    <div style="background-color: LightGray; padding: 10px; border-radius: 10px;
+         width: 300px; height: 350px; margin: 10px;">
+
+        <img src="{{this.anh_bia}}" alt="Không có" style="width: 150px; height: 150px; margin: 10px;">
+        <h6 class="fw-bold">Tên truyện: {{this.ten_truyen}}</h6>
+        <h6>Tác giả: {{this.tac_gia}}</h6>
+
+        <button type="button" class="btn btn-link"><a href="/updateTruyen/{{this.id}}">Sửa</a></button>
+        <button type="button" class="btn btn-link"><a href="/deleteTruyen/{{this.id}}">Xóa</a></button>
+        <button type="button" class="btn btn-link"><a href="/chiTietTruyen/{{this.id}}">Chi Tiết</a></button>
+
+    </div>
+
+    {{/each}}
+</div>

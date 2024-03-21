@@ -1,0 +1,46 @@
+<div class="container">
+    <h2 class="text-center text-uppercase fw-bold">danh sách người dùng</h2>
+    <section class="intro">
+        <div class="gradient-custom-1 h-100">
+            <div class="mask d-flex align-items-center h-100">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="table-responsive bg-white">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Passwork</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Fullname</th>
+                                            <th scope="col">Thao Tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each users}}
+                                        <tr>
+                                            <th scope="row" style="color: #666666;">{{@index}}</th>
+                                            <td>{{this.username}}</td>
+                                            <td>{{this.password}}</td>
+                                            <td>{{this.email}}</td>
+                                            <td>{{this.fullname}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-link"><a
+                                                        href="/edituser/{{this.id}}">Sửa</a></button>
+                                                <button type="button" class="btn btn-link"><a
+                                                        href="/deleteUser/{{this.id}}">Xóa</a></button>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

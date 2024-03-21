@@ -1,0 +1,42 @@
+<div class="container">
+    <h2 class="text-center text-uppercase fw-bold">Thêm Truyện tranh</h2>
+
+    <form class="row g-3 needs-validation" action="/addtruyen" method="post" enctype="multipart/form-data">
+
+        <div class="col-md-4">
+            <label for="ten_truyen" class="form-label">Tên truyện</label>
+            <input type="text" class="form-control" id="ten_truyen" name="ten_truyen" required>
+        </div>
+        <div class="col-md-4">
+            <label for="mo_ta" class="form-label">Mô tả</label>
+            <input type="text" class="form-control" id="mo_ta" name="mo_ta" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="tac_gia" class="form-label">Tác giả</label>
+            <input type="text" class="form-control" id="tac_gia" name="tac_gia" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="nam_xb" class="form-label">Năm xuất bản</label>
+            <input type="text" class="form-control" id="nam_xb" name="nam_xb" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="anh_bia" class="form-label">Ảnh bìa</label>
+            <input type="file" class="form-control" id="anh_bia" name="anh_bia" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="noi_dung_anh_truyen" class="form-label">Nội dung truyện</label>
+            <input type="file" class="form-control" id="noi_dung_anh_truyen" name="noi_dung_anh_truyen" multiple
+                required>
+        </div>
+
+
+
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+</div>
