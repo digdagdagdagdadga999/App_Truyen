@@ -1,46 +1,51 @@
 <div class="container">
-    <form action="/chiTietTruyen/{{truyens._id}}" method="get">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="/{{truyens.anh_bia}}" alt="Không có ảnh" class="img-fluid">
-            </div>
-
-            <div class="col-md-8">
-                <div class="truyen-info">
-                    <h2>{{truyens.ten_truyen}}</h2>
-                    <h6>Năm xuất bản: {{truyens.nam_xb}} </h6>
-                    <h6>Mô Tả: {{truyens.mo_ta}}</h6>
-
-                    <button type="button" class="btn btn-primary">Đọc Ngay</button>
-                </div>
-            </div>
-        </div>
-    </form>
-
-
+  <form action="/chiTietTruyen/{{truyens._id}}" method="get">
     <div class="row">
-        <div class="col-md-12">
-            <div class="comment-form">
-                <h3>Bình luận</h3>
+      <div class="col-md-4">
+        <img src="/{{truyens.anh_bia}}" alt="Không có ảnh" class="img-fluid" />
+      </div>
 
+      <div class="col-md-8">
+        <div class="truyen-info">
+          <h2>{{truyens.ten_truyen}}</h2>
+          <h6>Năm xuất bản: {{truyens.nam_xb}} </h6>
+          <h6>Mô Tả: {{truyens.mo_ta}}</h6>
 
-                {{#each binh_luan}}
-                <div class="comment">
-                    <h6>Username: {{this.username}}</h6>
-                    <h6>Thời gian: {{this.time}}</h6>
-                    <h5>Content: {{this.content}}</h5>
-                </div>
-                {{/each}}
-
-                <form action="/chiTietTruyen/{{truyens._id}}/Conment" method="post">
-                    <div class="form-group">
-                        <label for="comment">Nội dung bình luận:</label>
-                        <textarea class="form-control" rows="3" name="content" required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Bình luận</button>
-                </form>
-            </div>
+          <button type="button" class="btn btn-primary">Đọc Ngay</button>
         </div>
+      </div>
     </div>
+  </form>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="comment-form">
+        <h2>Bình luận</h2>
+        {{#if binh_luan}}
+          {{#each binh_luan}}
+            <div class="comment">
+              <p><strong>{{username}}</strong> ({{time}})</p>
+              <p>{{content}}</p>
+            </div>
+          {{/each}}
+        {{else}}
+          <p>Chưa có bình luận nào.</p>
+        {{/if}}
+
+        <form action="/chiTietTruyen/{{truyens._id}}/Conment" method="post">
+          <div class="form-group">
+            <label for="comment">Nội dung bình luận:</label>
+            <textarea
+              class="form-control"
+              rows="3"
+              name="content"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Bình luận</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

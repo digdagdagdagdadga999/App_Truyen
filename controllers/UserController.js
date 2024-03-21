@@ -67,7 +67,7 @@ exports.postDangNhap = (req, res) => {
             } else {
                 if (password == users.password) {
                     const token = generateToken(users);
-                    res.cookie("user", token, {
+                    res.cookie("users", token, {
                         httpOnly: true,
                         sameSite: "Strict",
                         maxAge: 1000 * 60 * 60 * 24,

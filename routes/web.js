@@ -61,7 +61,7 @@ router.post("/updateTruyen/:id", cpUpload, truyenController.postUpdateTruyen);
 router.get("/deleteTruyen/:id", truyenController.deleteTruyen);
 
 // hiển thị chi tiết
-router.get("/chiTietTruyen/:id", auth, truyenController.getChiTiet);
+router.get("/chiTietTruyen/:id",auth, truyenController.getChiTiet);
 
 // xử lý thông tin bình luận
 router.post("/chiTietTruyen/:id/Conment", auth, truyenController.postConment);

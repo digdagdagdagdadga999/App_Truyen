@@ -15,7 +15,7 @@ const generateToken = (users) => {
 };
 
 const auth = (req, res, next) => {
-    const userCookie = req.cookies["user"];
+    const userCookie = req.cookies["users"];
 
     if (!userCookie) {
         return res
@@ -25,7 +25,7 @@ const auth = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(userCookie, jwtSecret);
-        req.user = decoded; // Lưu thông tin người dùng vào req
+        req.users = decoded; // Lưu thông tin người dùng vào req
         next();
     } catch (error) {
         return res.status(401).json("Token không hợp lệ!");
@@ -34,4 +34,4 @@ const auth = (req, res, next) => {
 
 
 
-module.exports = { generateToken, auth };
+module.exports = { generateToken,  auth };
