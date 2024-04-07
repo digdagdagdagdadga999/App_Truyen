@@ -15,14 +15,13 @@ exports.trangchu = (req, res) => {
 }
 
 // hiển thị quản lý người dùng
-exports.getUser = (req, res) => {
-    user.find()
-        .then((users) => {
-            res.render("users/UserManger", { users, layout: "layouts/main" });
-        })
-        .catch((err) => {
-            console.error("Lỗi");
-        })
+exports.getUser = async (req, res) => {
+    try {
+        let list = await user.find({});
+        res.json(list);
+    } catch (error) {
+        res.json({ status: "Not found", result: error });
+    }
 }
 
 
@@ -47,7 +46,8 @@ exports.postDangKy = (req, res) => {
     newUser
         .save()
         .then(() => {
-            res.redirect("/dangnhap");
+            // res.redirect("/dangnhap");
+            res.json({ message: "Đăng ký thành công" });
         })
         .catch((err) => {
             console.error("Lỗi: ", err);
@@ -62,7 +62,7 @@ exports.postDangNhap = (req, res) => {
         .then((users) => {
             if (!users) {
                 return res
-                    .status(501)
+                    .status(404)
                     .send("không tìm thấy người dùng với username " + users.username);
             } else {
                 if (password == users.password) {
@@ -72,7 +72,8 @@ exports.postDangNhap = (req, res) => {
                         sameSite: "Strict",
                         maxAge: 1000 * 60 * 60 * 24,
                     });
-                    res.redirect("/"); // Redirect to homepage after successful login
+                    // res.redirect("/");
+                    res.json(users);
                 } else {
                     res.status(500).send("Mật khẩu không chính xác");
                 }
@@ -101,14 +102,15 @@ exports.postEditUser = (req, res) => {
     const userId = req.params.id;
     const updateUser = {
         username: req.body.username,
-        password: req.body.password,
         email: req.body.email,
+        password: req.body.password,
         fullname: req.body.fullname,
     };
 
-    user.findByIdAndUpdate(userId, updateUser)
+    user.findByIdAndUpdate(userId, updateUser, { new: true })
         .then(() => {
-            res.redirect("/getuser");
+            // res.redirect("/getuser");
+            res.json({ message: "Cập nhật người dùng thành công" });
         })
         .catch((err) => {
             console.error("Lỗi", err);
@@ -120,9 +122,44 @@ exports.deleteUser = (req, res) => {
     const userId = req.params.id;
     user.findByIdAndDelete(userId)
         .then(() => {
-            res.redirect("/getuser");
+            // res.redirect("/getuser");
+            res.json({ message: "Xóa người dùng thành công" });
         })
         .catch((err) => {
             console.error("Lỗi", err);
         })
+}
+
+// get user id
+exports.getUserById = async (req, res, next) => {
+    try {
+        let id = req.params.id;
+
+        console.log("Received ID:", id); // Log ID để kiểm tra
+
+        let obj = await user.findById(id);
+        console.log("User Object:", obj); // Log đối tượng user để kiểm tra
+
+        if (!obj) {
+            console.log("User not found with ID:", id); // Log thông báo khi không tìm thấy user
+            return res.json({ status: "not found", message: "User not found with ID" });
+        }
+
+        res.json(obj);
+
+    } catch (error) {
+        console.error("Error:", error); // Log lỗi nếu có
+        res.json({ status: "error", result: error });
+    }
+}
+
+exports.logOut = (req, res) => {
+    try {
+        res.cookie("users", "", { maxAge: 1 });
+        res.clearCookie("users");
+        // res.redirect("/getFormLogin");
+        res.json({ message: "Đăng xuất thành công" });
+    } catch (error) {
+        res.status(500).json({ error: "Có lỗi xảy ra: " + error.message });
+    }
 }

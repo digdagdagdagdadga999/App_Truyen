@@ -2,8 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const { generateToken, auth } = require("../middleware/jwwt");
-
-
+var { cpUpload, storage, cpAvatarUpload } = require("../middleware/muller");
 
 const userController = require("../controllers/UserController");
 
@@ -38,6 +37,11 @@ router.post("/edituser/:id", userController.postEditUser);
 // xóa người dùng
 router.get("/deleteUser/:id", userController.deleteUser);
 
+router.get("/getUserById/:id", userController.getUserById);
+
+router.get("/dangxuat", userController.logOut);
+
+
 ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
@@ -48,7 +52,6 @@ router.get("/alltruyen", truyenController.getAllTruyen);
 router.get("/addtruyen", truyenController.getAddTruyen);
 
 // xử lý thông tin truyện
-const cpUpload = upload.fields([{ name: 'anh_bia', maxCount: 1 }, { name: 'noi_dung_anh_truyen', maxCount: 10 }], { dest: 'uploads/' })
 router.post("/addtruyen", cpUpload, truyenController.postAddTruyen);
 
 //hiển thị form update truyện
@@ -61,10 +64,14 @@ router.post("/updateTruyen/:id", cpUpload, truyenController.postUpdateTruyen);
 router.get("/deleteTruyen/:id", truyenController.deleteTruyen);
 
 // hiển thị chi tiết
-router.get("/chiTietTruyen/:id",auth, truyenController.getChiTiet);
+router.get("/chiTietTruyen/:id", auth, truyenController.getChiTiet);
 
 // xử lý thông tin bình luận
 router.post("/chiTietTruyen/:id/Conment", auth, truyenController.postConment);
+
+// hiển thị đọc truyện
+router.get("/chiTietTruyen/:id/doctruyen", truyenController.doctruyen);
+
 
 
 // xuất router để sử dụng ở module khác

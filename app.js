@@ -31,6 +31,6 @@ app.set("view engine", "hbs");
 
 // Sử dụng middleware authenticateUser
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.use("/", routes);

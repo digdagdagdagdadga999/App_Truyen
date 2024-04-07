@@ -34,4 +34,4 @@ const auth = (req, res, next) => {
 
 
 
-module.exports = { generateToken,  auth };
+module.exports = { generateToken, auth };

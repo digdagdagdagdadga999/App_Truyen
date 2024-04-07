@@ -11,7 +11,8 @@
           <h6>Năm xuất bản: {{truyens.nam_xb}} </h6>
           <h6>Mô Tả: {{truyens.mo_ta}}</h6>
 
-          <button type="button" class="btn btn-primary">Đọc Ngay</button>
+          <button type="button" class="btn btn-link"><a href="/chiTietTruyen/{{truyens.id}}/doctruyen">Đọc
+              truyện</a></button>
         </div>
       </div>
     </div>
@@ -21,26 +22,22 @@
     <div class="col-md-12">
       <div class="comment-form">
         <h2>Bình luận</h2>
-        {{#if binh_luan}}
-          {{#each binh_luan}}
-            <div class="comment">
-              <p><strong>{{username}}</strong> ({{time}})</p>
-              <p>{{content}}</p>
-            </div>
-          {{/each}}
+        {{#if truyens.binh_luan}}
+        {{#each truyens.binh_luan}}
+        <div class="comment">
+          <p><strong>{{this.username}}</strong> ({{this.time}})</p>
+          <p>{{this.content}}</p>
+        </div>
+
+        {{/each}}
         {{else}}
-          <p>Chưa có bình luận nào.</p>
+        <p>Chưa có bình luận nào.</p>
         {{/if}}
 
         <form action="/chiTietTruyen/{{truyens._id}}/Conment" method="post">
           <div class="form-group">
             <label for="comment">Nội dung bình luận:</label>
-            <textarea
-              class="form-control"
-              rows="3"
-              name="content"
-              required
-            ></textarea>
+            <textarea class="form-control" rows="3" name="content" required></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">Bình luận</button>

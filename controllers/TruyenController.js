@@ -2,16 +2,14 @@ const truyen = require("../models/TruyenTranhModel");
 const isEmpty = require("lodash/isEmpty");
 
 // hiển thị danh sách truyện
-exports.getAllTruyen = (req, res) => {
-  truyen
-    .find()
-    .then((truyens) => {
-      res.render("truyen/DanhSachTruyen", { truyens, layout: "layouts/main" });
-    })
-    .catch((err) => {
-      res.status(500).send("Lỗi");
-    });
-};
+exports.getAllTruyen = async (req, res) => {
+  try {
+    let list = await truyen.find({});
+    res.json(list);
+  } catch (error) {
+    res.json({ status: "Not found", result: error });
+  }
+}
 
 exports.getChiTiet = (req, res) => {
   const idTruyen = req.params.id;
@@ -22,11 +20,7 @@ exports.getChiTiet = (req, res) => {
         // Nếu không tìm thấy truyện, có thể xử lý thông báo lỗi hoặc chuyển hướng đến trang khác
         return res.status(404).send("Không tìm thấy truyện");
       }
-      res.render("truyen/ChiTietTruyen", {
-        truyens,
-        binh_luan: truyen.binh_luan, 
-        layout: "layouts/main",
-      });
+      res.status(200).json({ truyens, binh_luan: truyens.binh_luan });
     })
     .catch((err) => {
       res.status(500).send("Lỗi");
@@ -40,16 +34,18 @@ exports.getAddTruyen = (req, res) => {
 
 // xử lý thêm truyện
 exports.postAddTruyen = (req, res) => {
-  console.log(req.body);
+  
   const newTruyen = new truyen({
     ten_truyen: req.body.ten_truyen,
     mo_ta: req.body.mo_ta,
     tac_gia: req.body.tac_gia,
     nam_xb: req.body.nam_xb,
-    anh_bia: req.files.anh_bia ? req.files.anh_bia[0].path : "",
+    anh_bia: req.files.anh_bia ? req.files.anh_bia[0].filename : null,
     noi_dung_anh_truyen:
       req.files.noi_dung_anh_truyen?.map((file) => file.path) || [],
   });
+  console.log(newTruyen);
+
   newTruyen
     .save()
     .then(() => {
@@ -143,13 +139,50 @@ exports.postConment = async (req, res) => {
     time: Date.now(),
   };
 
-truyen
-  .findByIdAndUpdate(idTruyen, { $push: { binh_luan: newComment } })
-  .then((truyens) => {
-    res.render("truyen/ChiTietTruyen", { truyens, newComment, layout: "layouts/main" });
-  })
-  .catch((err) => {
-    console.error("Error updating truyện:", err.message);
-    res.status(500).send("Lỗi thêm bình luận: " + err.message);
-  });
+  truyen
+    .findByIdAndUpdate(idTruyen, { $push: { binh_luan: newComment } })
+    .then((truyens) => {
+      res.redirect(`/chiTietTruyen/${idTruyen}`);
+    })
+    .catch((err) => {
+      console.error("Error updating truyện:", err.message);
+      res.status(500).send("Lỗi thêm bình luận: " + err.message);
+    });
 };
+
+
+exports.doctruyen = (req, res) => {
+  const idTruyen = req.params.id;
+  truyen
+    .findById(idTruyen)
+    .then((truyens) => {
+      if (!truyens) {
+        // Nếu không tìm thấy truyện, có thể xử lý thông báo lỗi hoặc chuyển hướng đến trang khác
+        return res.status(404).send("Không tìm thấy truyện");
+      }
+      res.render("truyen/DocTruyen", {
+        truyens,
+        layout: "layouts/main",
+      });
+    })
+    .catch((err) => {
+      res.status(500).send("Lỗi");
+    });
+};
+
+// exports.deleteTruyen = async (req, res) => {
+//   const truyenId = req.params.truyensId;
+//   const binh_luan_id = req.params.binh_luanId;
+
+//   console.log(truyenId);
+//   console.log(binh_luan_id);
+
+//   truyen.findByIdAndDelete(truyenId, { $pull: { binh_luan: { _id: binh_luan_id } } })
+//     .then((truyens) => {
+//       res.redirect(`/chiTietTruyen/${truyenId}`);
+//     })
+//     .catch((err) => {
+//       console.error("Error updating truyện:", err.message);
+//       res.status(500).send("Lỗi thêm bình luận: " + err.message);
+//     });
+// }
